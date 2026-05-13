@@ -1,0 +1,112 @@
+name: Build DeTree Multi-Arch
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger on version tags like v1.0.0
+
+jobs:
+  build-linux-x86_64:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: pip install pyinstaller
+      
+      - name: Build binary (x86_64)
+        run: |
+          pyinstaller --onefile --name detree-linux-x86_64 d2c2_cli.py
+          chmod +x dist/detree-linux-x86_64
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: detree-linux-x86_64
+          path: dist/detree-linux-x86_64
+
+  build-linux-arm64:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: pip install pyinstaller
+      
+      - name: Set up QEMU (for ARM emulation)
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+      
+      - name: Build binary (ARM64 via Docker)
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/src -w /src --platform linux/arm64 python:3.11-slim bash -c "
+            pip install pyinstaller &&
+            pyinstaller --onefile --name detree-linux-arm64 d2c2_cli.py &&
+            chmod +x dist/detree-linux-arm64
+          "
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: detree-linux-arm64
+          path: dist/detree-linux-arm64
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: pip install pyinstaller
+      
+      - name: Build binary (macOS)
+        run: |
+          pyinstaller --onefile --name detree-macos d2c2_cli.py
+          chmod +x dist/detree-macos
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: detree-macos
+          path: dist/detree-macos
+
+  release:
+    needs: [build-linux-x86_64, build-linux-arm64, build-macos]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      
+      - name: List artifacts
+        run: find artifacts -type f
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/detree-linux-x86_64/detree-linux-x86_64
+            artifacts/detree-linux-arm64/detree-linux-arm64
+            artifacts/detree-macos/detree-macos
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

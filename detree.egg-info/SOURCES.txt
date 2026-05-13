@@ -1,0 +1,8 @@
+README.md
+d2c2_cli.py
+setup.py
+detree.egg-info/PKG-INFO
+detree.egg-info/SOURCES.txt
+detree.egg-info/dependency_links.txt
+detree.egg-info/entry_points.txt
+detree.egg-info/top_level.txt

@@ -1,0 +1,2 @@
+[console_scripts]
+detree = d2c2_cli:main

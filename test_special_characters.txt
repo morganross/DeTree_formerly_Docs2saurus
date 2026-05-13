@@ -1,0 +1,4 @@
+File@With#Invalid$Chars
+    Child!Name%Test
+Another~File`With^Special
+Item[with]brackets{and}braces

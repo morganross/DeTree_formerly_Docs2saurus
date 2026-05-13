@@ -1,0 +1,50 @@
+{
+  "name": "Project Documentation",
+  "type": "directory",
+  "children": [
+    {
+      "name": "Getting Started",
+      "type": "directory",
+      "body": "Welcome to our documentation. This is the body content for Getting Started.",
+      "children": [
+        {
+          "name": "Installation.md",
+          "type": "file",
+          "body": "## Step 1: Download the installer\n## Step 2: Run the setup\n\nFollow these steps carefully."
+        },
+        {
+          "name": "Configuration.md",
+          "type": "file",
+          "body": "## Basic Settings\nSet your preferences here.\n\n## Advanced Settings\nConfigure advanced options."
+        }
+      ]
+    },
+    {
+      "name": "API Reference",
+      "type": "directory",
+      "children": [
+        {
+          "name": "endpoints.json",
+          "type": "file",
+          "body": "{\n  \"version\": \"1.0\",\n  \"endpoints\": [\"/api/users\", \"/api/data\"]\n}"
+        },
+        {
+          "name": "examples",
+          "type": "directory",
+          "children": [
+            {
+              "name": "example1.txt",
+              "type": "file",
+              "body": "This is example 1 content."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "README.md",
+      "type": "file",
+      "body": "# Project Title\n\nThis is the main README file."
+    }
+  ]
+}

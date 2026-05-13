@@ -1,0 +1,4 @@
+Item  With   Multiple    Spaces
+    Child    Item
+        Deeply    Nested    Item
+Item    With    Trailing    Spaces    

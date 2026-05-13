@@ -1,3 +1,27 @@
+Metadata-Version: 2.4
+Name: detree
+Version: 1.0.0
+Summary: Convert nested text lists into hierarchical directory structures
+Home-page: https://github.com/yourusername/DeTree
+Author: DeTree Contributors
+Author-email: your.email@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Utilities
+Classifier: Topic :: Software Development :: Documentation
+Classifier: Topic :: System :: Filesystems
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-python
+Dynamic: summary
+
 # DeTree (Formerly Docs2saurus)
 Create files and folder structure using a text editor.
 
@@ -197,64 +221,18 @@ python d2c2_cli.py <input_file> <output_directory> [options]
 
 ### Input File Format
 
-DeTree supports **two input formats**:
-
-#### 1. Text Format (Default)
 The input file should contain a nested list where:
 - **Indentation** determines hierarchy (spaces or tabs)
 - **Lines** become either files or directories
 - **Body content** must be marked with `**` (double asterisks) on the same line
 
-**Example Input:**
+#### Example Input:
 ```
 Parent Item
     **Body content for parent**
     Child Item 1
         **Body content for child**
     Child Item 2
-```
-
-#### 2. JSON Format (New!)
-Structured JSON file with explicit type definitions (no parsing ambiguity!):
-
-**Example `structure.json`:**
-```json
-{
-  "name": "Project Documentation",
-  "type": "directory",
-  "body": "Optional body content for this item",
-  "children": [
-    {
-      "name": "Getting Started.md",
-      "type": "file",
-      "body": "## Welcome\nThis is the content."
-    },
-    {
-      "name": "API Reference",
-      "type": "directory",
-      "children": [
-        {"name": "endpoints.json", "type": "file", "body": "{\"version\": \"1.0\"}"}
-      ]
-    }
-  ]
-}
-```
-
-**JSON Fields:**
-- `"name"` (required): The filename or directory name
-- `"type"` (optional): `"file"` or `"directory"` (auto-detected from children if omitted)
-- `"body"` (optional): Body content (supports newlines with `\n`)
-- `"children"` (optional): Array of child items (makes it a directory)
-
-**Usage:**
-```bash
-# Auto-detect format (by file content)
-detree input.txt output/
-detree structure.json output/
-
-# Explicit format
-detree --format json structure.json output/
-detree --format text input.txt output/
 ```
 
 #### Key Rules:
@@ -329,31 +307,6 @@ The tool validates input before processing:
 - Verifies it's a file (not a directory)
 - Ensures the file is not empty
 - Provides clear error messages
-
-#### 10. JSON Input Mode (New!)
-Process structured JSON files with explicit type definitions:
-- **No parsing ambiguity** - Clear parent-child relationships via `"children"` array
-- **Explicit types** - `"type": "file"` or `"type": "directory"`
-- **Body content** - `"body"` field supports newlines (`\n`)
-- **Any extension** - Specify exact filename in `"name"` field
-
-**Example:**
-```json
-{
-  "name": "Project",
-  "type": "directory",
-  "body": "Optional body content",
-  "children": [
-    {"name": "README.md", "type": "file", "body": "# Title\nContent here"}
-  ]
-}
-```
-
-**Usage:**
-```bash
-detree --format json structure.json output/
-# Or auto-detect: detree structure.json output/
-```
 
 ### Output Structure
 

@@ -1,0 +1,3 @@
+This is a very long item name that might exceed Windows filename length limits and could cause issues
+    Short child
+Another Long Name That Contains Lots Of Descriptive Text About What This Item Represents
