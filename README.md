@@ -115,10 +115,36 @@ wget -qO- https://raw.githubusercontent.com/yourusername/DeTree/main/install.sh 
 ```
 
 **Supported Architectures:**
-- ✅ Linux x86_64
+- ✅ Linux x86_64 (Intel/AMD)
 - ✅ Linux ARM64 (aarch64) - Raspberry Pi, ARM servers
 - ✅ macOS (Intel & Apple Silicon)
-- ✅ Windows (via WSL)
+- ✅ Windows (via WSL or native .exe)
+
+#### Building Binaries
+
+**On Linux (builds for native + ARM64 via Docker):**
+```bash
+chmod +x build_linux_binaries.sh
+./build_linux_binaries.sh
+# Creates: dist/detree-linux-x86_64, dist/detree-linux-arm64
+```
+
+**On macOS (builds for Intel + Apple Silicon):**
+```bash
+chmod +x build_macos.sh
+./build_macos.sh
+# Creates: dist/detree-macos-intel, dist/detree-macos-arm64
+```
+
+**On Windows (native .exe):**
+```powershell
+pyinstaller --onefile --name detree-windows.exe d2c2_cli.py
+# Creates: dist/detree-windows.exe
+```
+
+**Cross-compilation:**
+- Use Docker: `docker run --rm -v "$(pwd):/src" -w /src python:3.11-slim bash -c "pip install pyinstaller && pyinstaller --onefile --name detree-linux-arm64 d2c2_cli.py"`
+- Or use GitHub Actions (automatic on tag push)
 
 #### Option 1: Quick Install via pip (Recommended)
 ```bash
